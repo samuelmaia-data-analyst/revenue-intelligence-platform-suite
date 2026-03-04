@@ -1,154 +1,82 @@
 # Revenue-Intelligence-Platform-Suite
 
-Unified Revenue + Retention Intelligence platform, consolidating data engineering, analytics, and ML into one modular monorepo.
+Operating system for Revenue and Retention decisions.
 
 ## Language
 - English: [README.md](README.md)
 - Portugues (BR): [README.pt-BR.md](README.pt-BR.md)
 - Portugues (PT): [README.pt-PT.md](README.pt-PT.md)
 
-## Summary
-- [What This Is](#what-this-is)
-- [Live Executive Demo](#live-executive-demo)
-- [Platform Architecture](#platform-architecture)
-- [How Repositories Compose The Platform](#how-repositories-compose-the-platform)
-- [Modules](#modules)
-- [Monorepo Layout](#monorepo-layout)
-- [Executive Docs](#executive-docs)
-- [Governance and Security](#governance-and-security)
-- [Case Studies](#case-studies)
-- [Quickstart](#quickstart)
-- [Subtree Update Example](#subtree-update-example)
-- [Business Outcomes](#business-outcomes)
-- [Tech Stack](#tech-stack)
+## Why This Exists
 
-## What This Is
+Most analytics portfolios show isolated projects. This platform demonstrates an integrated decision system:
 
-- Layered architecture: `raw -> bronze -> silver -> gold`
-- Business models: churn, next purchase, LTV, and prioritization
-- Executive and operational applications with Streamlit
-- Technical governance: data contracts, testing, and CI
+- data pipeline reliability
+- model-driven prioritization
+- executive action board
+- governance and traceability
 
-## Live Executive Demo
+## Official Showcase Use Case
 
-- Executive Dashboard (flagship app): `apps/executive-dashboard/app.py`
-- Revenue Intelligence demo: https://revenue-intelligence-platform.streamlit.app/
-- Data Senior Analytics demo: https://data-analytics-sr.streamlit.app
-- Sales Analytics demo: https://analys-vendas-python.streamlit.app/
+Reduce B2B revenue churn by prioritizing retention actions with financial impact.
 
-## Platform Architecture
+- Full definition: [Showcase Use Case](./docs/showcase-use-case.md)
+- Live app: `https://revenue-intelligence-platform-suite.streamlit.app/`
+
+## Executive Questions Answered
+
+1. Which accounts have the highest revenue at risk this week?
+2. What action should leadership execute first?
+3. How much revenue can be recovered under each scenario?
+
+## Product Architecture
 
 ```mermaid
 flowchart TD
-  subgraph Sources["Data Sources"]
-    S1[CRM ERP CSV]
-    S2[Ecommerce Sales]
-    S3[Marketing Spend]
-  end
-
-  subgraph Pipeline["Data Platform"]
-    I[Ingestion]
-    Q[Data Quality - Pandera]
-    T[Transforms and Star Schema]
-  end
-
-  subgraph ML["ML Layer"]
-    M1[Churn Model]
-    M2[Next Purchase Model]
-    M3[LTV Segmentation]
-    R[Recommendation Prioritization]
-  end
-
-  subgraph Serving["Serving & Apps"]
-    A1[Batch Scoring]
-    A2[API FastAPI Optional]
-    D1[Executive Streamlit Dashboard]
-    D2[Sales Analytics Streamlit]
-  end
-
-  Sources --> I --> Q --> T
-  T --> M1 --> R --> A1 --> D1
-  T --> M2 --> R
-  T --> M3 --> R
-  A2 --> D1
-  A2 --> D2
+  A[Module Data Sources] --> B[Data Quality + Transform]
+  B --> C[Risk and Value Scoring]
+  C --> D[Executive Dashboard]
+  D --> E[Leadership Actions]
 ```
 
-## How Repositories Compose The Platform
+## Core Modules
 
-```mermaid
-flowchart LR
-  R1[Revenue-Intelligence-Platform] --> P[Revenue-Intelligence-Platform-Suite]
-  R2[churn-prediction] --> P
-  R3[amazon-sales-analysis] --> P
-  R4[analise-vendas-python] --> P
-  R5[data-senior-analytics] --> P
-```
+- [revenue-intelligence](./modules/revenue-intelligence)
+- [churn-prediction](./modules/churn-prediction)
+- [analise-vendas-python](./modules/analise-vendas-python)
 
-## Modules
+Supporting modules remain integrated for portfolio coverage.
 
-| Module Path | Source Repository | Status |
-|---|---|---|
-| [modules/revenue-intelligence](./modules/revenue-intelligence) | Revenue-Intelligence-Platform-End-to-End-Analytics-ML-System | Integrated via subtree |
-| [modules/churn-prediction](./modules/churn-prediction) | churn-prediction | Integrated via subtree |
-| [modules/amazon-sales-analysis](./modules/amazon-sales-analysis) | amazon-sales-analysis | Integrated via subtree |
-| [modules/analise-vendas-python](./modules/analise-vendas-python) | analise-vendas-python | Integrated via subtree |
-| [modules/data-senior-analytics](./modules/data-senior-analytics) | data-senior-analytics | Integrated via subtree |
+## Run in 2 Steps
 
-## Monorepo Layout
-
-```text
-revenue-intelligence-platform-suite/
-|- apps/
-|- datasets/
-|- docs/
-|- modules/
-|- packages/
-|- platform/
-|- tests/
-`- pyproject.toml
-```
-
-## Executive Docs
-
-- [Executive Brief](./docs/executive-brief.md)
-- [KPI Scorecard](./docs/kpi-scorecard.md)
-- [Governance RACI](./docs/governance-raci.md)
-
-## Governance and Security
-
-- [CODEOWNERS](./.github/CODEOWNERS)
-- [Security Policy](./SECURITY.md)
-- [Compliance Checklist (LGPD/GDPR)](./docs/compliance-checklist.md)
-
-## Case Studies
-
-- [Case Study 01 - Churn Retention Prioritization](./docs/case-studies/case-study-01-churn-retention-prioritization.md)
-- [Case Study 02 - Discount Leakage Revenue Recovery](./docs/case-studies/case-study-02-discount-leakage-revenue-recovery.md)
-
-## Quickstart
-
+1. Generate showcase artifacts:
 ```bash
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-pip install -e ".[dev]"
+python scripts/run_showcase_demo.py
+```
+
+2. Launch executive app:
+```bash
 streamlit run apps/executive-dashboard/app.py
 ```
 
-## Subtree Update Example
+## Evidence and Proof
 
-```bash
-git fetch churn-prediction main
-git subtree pull --prefix modules/churn-prediction churn-prediction main --squash
-```
+- [Proof of Execution](./docs/proof.md)
+- [Executive Brief](./docs/executive-brief.md)
+- [KPI Scorecard](./docs/kpi-scorecard.md)
+- [Governance RACI](./docs/governance-raci.md)
+- [Security Policy](./SECURITY.md)
+- [Compliance Checklist](./docs/compliance-checklist.md)
 
-## Business Outcomes
+## Current Maturity
 
-- Better prioritization for high-value and high-risk customers
-- Faster retention and revenue-growth decisions
-- Reproducible pipelines and model traceability
+- Monorepo integration: complete
+- Executive dashboard (real module data): complete
+- Governance baseline: complete
+- Production operationalization with live enterprise sources: next phase
 
-## Tech Stack
+## Next Milestones
 
-Python, SQL, Streamlit, scikit-learn, Prefect, Pandera, MLflow, Pytest, Docker.
-
+1. Replace proxy KPIs with production telemetry.
+2. Add automated drift and action adoption monitoring.
+3. Publish quarterly release notes with business deltas.

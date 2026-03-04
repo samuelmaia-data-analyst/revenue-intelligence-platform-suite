@@ -12,6 +12,7 @@ CUSTOMER_PATH = (
     ROOT / "modules" / "revenue-intelligence" / "data" / "raw" / "E-commerce Customer Behavior - Sheet1.csv"
 )
 METRICS_PATH = ROOT / "modules" / "revenue-intelligence" / "data" / "processed" / "metrics_report.json"
+SHOWCASE_SUMMARY_PATH = ROOT / "reports" / "showcase" / "summary.json"
 
 
 @st.cache_data(show_spinner=False)
@@ -21,6 +22,14 @@ def load_data() -> tuple[pd.DataFrame, pd.DataFrame, dict]:
     with METRICS_PATH.open("r", encoding="utf-8") as fp:
         model_metrics = json.load(fp)
     return sales_df, customer_df, model_metrics
+
+
+@st.cache_data(show_spinner=False)
+def load_showcase_summary() -> dict:
+    if not SHOWCASE_SUMMARY_PATH.exists():
+        return {}
+    with SHOWCASE_SUMMARY_PATH.open("r", encoding="utf-8") as fp:
+        return json.load(fp)
 
 
 def build_risk_score(df: pd.DataFrame) -> pd.DataFrame:
@@ -44,6 +53,7 @@ def build_risk_score(df: pd.DataFrame) -> pd.DataFrame:
 
 try:
     sales_df, customer_df, model_metrics = load_data()
+    showcase_summary = load_showcase_summary()
 except Exception as exc:
     st.error("Could not load real module data. Check repository paths and file integrity.")
     st.exception(exc)
@@ -102,6 +112,12 @@ with right:
     st.subheader("NRR Proxy Trend (MoM)")
     st.line_chart((monthly_revenue.set_index("month")["nrr_proxy"] * 100).round(2))
 
+if showcase_summary:
+    st.info(
+        "Showcase artifacts loaded from reports/showcase/summary.json "
+        f"(latest month: {showcase_summary.get('latest_month', 'n/a')})."
+    )
+
 st.markdown("---")
 st.subheader("Top Retention Priorities (Real Customer Data)")
 
@@ -123,6 +139,20 @@ top_cols = [
 ]
 top_priorities = risk_view.sort_values("Expected Recovery (USD)", ascending=False)[top_cols].head(12)
 st.dataframe(top_priorities, use_container_width=True)
+
+st.subheader("Leadership Actions This Week")
+action_counts = (
+    top_priorities["Recommended Action"].value_counts().rename_axis("Action").reset_index(name="Accounts")
+)
+st.bar_chart(action_counts.set_index("Action")["Accounts"])
+
+action_notes = [
+    "Approve targeted retention offers for top 10 accounts by expected recovery.",
+    "Assign CSM owners to all accounts with Risk Score >= 0.60.",
+    "Run pricing review for customers flagged with high risk and high spend.",
+]
+for idx, note in enumerate(action_notes, start=1):
+    st.write(f"{idx}. {note}")
 
 st.markdown("---")
 a, b, c = st.columns(3)
