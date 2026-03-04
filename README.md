@@ -22,6 +22,10 @@ Reduce B2B revenue churn by prioritizing retention actions with financial impact
 
 - Full definition: [Showcase Use Case](./docs/showcase-use-case.md)
 - Live app: `https://revenue-intelligence-platform-suite.streamlit.app/`
+- Portal pages:
+  - `apps/executive-dashboard/app.py` (home hub)
+  - `apps/executive-dashboard/pages/1_Executive_KPI_Board.py`
+  - `apps/executive-dashboard/pages/2_Modules_Access.py`
 
 ## Executive Questions Answered
 
@@ -46,6 +50,15 @@ flowchart TD
 - [analise-vendas-python](./modules/analise-vendas-python)
 
 Supporting modules remain integrated for portfolio coverage.
+
+## Unified Access
+
+The flagship Streamlit app now works as a single access point for the platform:
+
+- Executive KPI board
+- Modules access page
+- Public demo links
+- Governance and proof references
 
 ## Run in 2 Steps
 
