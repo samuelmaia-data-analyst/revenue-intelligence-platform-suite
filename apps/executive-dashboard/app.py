@@ -21,8 +21,13 @@ st.info(
 col1, col2 = st.columns(2)
 with col1:
     st.subheader("Primary Navigation")
-    st.page_link("pages/1_Executive_KPI_Board.py", label="Open Executive KPI Board")
-    st.page_link("pages/2_Modules_Access.py", label="Open Modules Access")
+    st.markdown(
+        """
+- Open **Executive KPI Board** in the left sidebar
+- Open **Modules Access** in the left sidebar
+"""
+    )
+    st.caption("Navigation is handled by Streamlit multipage sidebar.")
 
 with col2:
     st.subheader("Public Demos")

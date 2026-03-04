@@ -140,7 +140,7 @@ top_cols = [
     "Recommended Action",
 ]
 top_priorities = risk_view.sort_values("Expected Recovery (USD)", ascending=False)[top_cols].head(12)
-st.dataframe(top_priorities, use_container_width=True)
+st.dataframe(top_priorities, width="stretch")
 
 st.subheader("Leadership Actions This Week")
 action_counts = (
