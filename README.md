@@ -1,4 +1,4 @@
-# Customer Intelligence Platform Suite
+# Revenue-Intelligence-Platform-Suite
 
 Plataforma unica de Revenue + Retention Intelligence, consolidando engenharia de dados, analytics e ML em um monorepo modular.
 
@@ -51,7 +51,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-  R1[Revenue-Intelligence-Platform] --> P[Customer Intelligence Platform Suite]
+  R1[Revenue-Intelligence-Platform] --> P[Revenue-Intelligence-Platform-Suite]
   R2[churn-prediction] --> P
   R3[amazon-sales-analysis] --> P
   R4[analise-vendas-python] --> P
@@ -112,3 +112,4 @@ git subtree pull --prefix modules/churn-prediction churn-prediction main --squas
 ## Tech Stack
 
 Python, SQL, Streamlit, scikit-learn, Prefect, Pandera, MLflow, Pytest, Docker.
+
