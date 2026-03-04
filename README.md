@@ -9,6 +9,7 @@ Unified Revenue + Retention Intelligence platform, consolidating data engineerin
 
 ## Summary
 - [What This Is](#what-this-is)
+- [Live Executive Demo](#live-executive-demo)
 - [Platform Architecture](#platform-architecture)
 - [How Repositories Compose The Platform](#how-repositories-compose-the-platform)
 - [Modules](#modules)
@@ -25,6 +26,13 @@ Unified Revenue + Retention Intelligence platform, consolidating data engineerin
 - Business models: churn, next purchase, LTV, and prioritization
 - Executive and operational applications with Streamlit
 - Technical governance: data contracts, testing, and CI
+
+## Live Executive Demo
+
+- Executive Dashboard (flagship app): `apps/executive-dashboard/app.py`
+- Revenue Intelligence demo: https://revenue-intelligence-platform.streamlit.app/
+- Data Senior Analytics demo: https://data-analytics-sr.streamlit.app
+- Sales Analytics demo: https://analys-vendas-python.streamlit.app/
 
 ## Platform Architecture
 

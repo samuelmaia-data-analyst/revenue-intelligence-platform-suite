@@ -9,6 +9,7 @@ Plataforma unificada de Revenue + Retention Intelligence, consolidando engenhari
 
 ## Sumario
 - [O Que E](#o-que-e)
+- [Demo Executiva](#demo-executiva)
 - [Arquitetura da Plataforma](#arquitetura-da-plataforma)
 - [Como os Repositorios Compoem a Plataforma](#como-os-repositorios-compoem-a-plataforma)
 - [Modulos](#modulos)
@@ -25,6 +26,13 @@ Plataforma unificada de Revenue + Retention Intelligence, consolidando engenhari
 - Modelos de negocio: churn, next purchase, LTV e priorizacao
 - Apps executivos e operacionais com Streamlit
 - Governanca tecnica com contratos de dados, testes e CI
+
+## Demo Executiva
+
+- Dashboard executivo (app flagship): `apps/executive-dashboard/app.py`
+- Demo Revenue Intelligence: https://revenue-intelligence-platform.streamlit.app/
+- Demo Data Senior Analytics: https://data-analytics-sr.streamlit.app
+- Demo Sales Analytics: https://analys-vendas-python.streamlit.app/
 
 ## Arquitetura da Plataforma
 
