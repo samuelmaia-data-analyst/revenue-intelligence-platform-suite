@@ -19,15 +19,9 @@
 
 ## Table of Contents
 - [Executive Summary](#executive-summary)
-- [Problem](#problem)
-- [Approach](#approach)
-- [Key Insights](#key-insights)
-- [Expected Impact](#expected-impact)
+- [Business Metrics Snapshot](#business-metrics-snapshot)
 - [Methodology](#methodology)
-- [Dataset Source](#dataset-source)
-- [Architecture](#architecture)
 - [How to Run](#how-to-run)
-- [Docker](#docker)
 - [Quality and Contracts](#quality-and-contracts)
 - [CI and Product Metrics](#ci-and-product-metrics)
 - [Release Process](#release-process)
@@ -129,6 +123,9 @@ pytest
 - GitHub: https://github.com/samuelmaia-data-analyst
 - LinkedIn: https://linkedin.com/in/samuelmaia-data-analyst
 - Email: smaia2@gmail.com
+
+
+
 
 
 

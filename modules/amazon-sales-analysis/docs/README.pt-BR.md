@@ -17,15 +17,14 @@
 - North Star (NRR): **86,69%**
 - Upside com 5% de recuperação: **+$252,3K**
 
-## Sumário
-- [Visão do Projeto](#visão-do-projeto)
-- [Diferenciais para Recrutadores e Leads](#diferenciais-para-recrutadores-e-leads)
-- [Fonte do Dataset](#fonte-do-dataset)
+## Sumario
+- [Resumo Executivo](#resumo-executivo)
+- [Metricas de Negocio](#metricas-de-negocio)
+- [Metodologia](#metodologia)
 - [Executar Localmente](#executar-localmente)
 - [Qualidade e Contratos](#qualidade-e-contratos)
-- [CI e Métricas de Produto](#ci-e-métricas-de-produto)
+- [CI e Metricas de Produto](#ci-e-metricas-de-produto)
 - [Processo de Release](#processo-de-release)
-- [Stack](#stack)
 - [Contato](#contato)
 
 ## Visão do Projeto
@@ -99,6 +98,9 @@ Python, Pandas, Plotly, Streamlit, Seaborn, Matplotlib, Pytest.
 - GitHub: https://github.com/samuelmaia-data-analyst
 - LinkedIn: https://linkedin.com/in/samuelmaia-data-analyst
 - Email: smaia2@gmail.com
+
+
+
 
 
 
