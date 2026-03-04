@@ -1,8 +1,11 @@
-﻿# Amazon Sales Analytics | Business Impact Portfolio
+> This repository is part of the **Customer Intelligence Platform**
+> Main platform: ../../README.md
+
+# Amazon Sales Analytics | Business Impact Portfolio
 
 ## Language
 - English: [docs/README.en.md](docs/README.en.md)
-- Português (BR): [docs/README.pt-BR.md](docs/README.pt-BR.md)
+- Portugu�s (BR): [docs/README.pt-BR.md](docs/README.pt-BR.md)
 
 ## Summary
 - Business problem: revenue leakage from discount strategy.
@@ -200,6 +203,11 @@ Samuel Maia
 - GitHub: https://github.com/samuelmaia-data-analyst
 - LinkedIn: https://linkedin.com/in/samuelmaia-data-analyst
 - Email: smaia2@gmail.com
+
+## Where it fits in the platform
+- Layer: Pipeline + App + Quality
+- Inputs: Amazon sales raw files (orders, products, discounts, channels)
+- Outputs: KPI tables, leakage analysis, Streamlit analytics views, tested data contracts
 
 
 

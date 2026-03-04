@@ -1,4 +1,7 @@
-﻿# Data Senior Analytics
+> This repository is part of the **Customer Intelligence Platform**
+> Main platform: ../../README.md
+
+# Data Senior Analytics
 
 [English version](README.en.md)
 
@@ -72,3 +75,11 @@ Copy `.env.example` to `.env` and adjust values for your environment.
 
 ## License
 Licensed under MIT. See [LICENSE](LICENSE).
+
+## Where it fits in the platform
+- Layer: Pipeline + App + Quality
+- Inputs: Business CSV/XLSX datasets from operational teams
+- Outputs: Decision-ready insights, curated datasets, governance-checked dashboard outputs
+
+
+

@@ -1,3 +1,6 @@
+> This repository is part of the **Customer Intelligence Platform**
+> Main platform: ../../README.md
+
 # 📊 Sales Analytics Dashboard – End-to-End Data Project
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue)
@@ -192,3 +195,11 @@ Arquitetura preparada para evolução
 Maturidade analítica e visão estratégica
 
 ⭐ Se este projeto foi útil ou inspirador, considere deixar uma estrela.
+
+## Where it fits in the platform
+- Layer: App + Analytics
+- Inputs: Transactional sales data, product and channel dimensions
+- Outputs: Interactive sales dashboards, business KPIs, actionable analysis for leadership
+
+
+
