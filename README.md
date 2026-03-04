@@ -1,33 +1,40 @@
-# Customer Intelligence Platform (Revenue + Retention)
+# Customer Intelligence Platform Suite
 
-Plataforma end-to-end de dados e ML para inteligencia de receita e retencao, unificando cinco repositorios em um unico sistema modular.
+Plataforma unica de Revenue + Retention Intelligence, consolidando engenharia de dados, analytics e ML em um monorepo modular.
 
-## Architecture
+## What This Is
+
+- Arquitetura em camadas: `raw -> bronze -> silver -> gold`
+- Modelos de negocio: churn, next purchase, LTV e priorizacao
+- Aplicacoes executivas e operacionais com Streamlit
+- Governanca tecnica: contratos de dados, testes e CI
+
+## Platform Architecture
 
 ```mermaid
 flowchart TD
   subgraph Sources["Data Sources"]
-    S1[CRM / ERP / CSV]
-    S2[E-commerce / Sales]
+    S1[CRM ERP CSV]
+    S2[Ecommerce Sales]
     S3[Marketing Spend]
   end
 
-  subgraph Pipeline["Data Platform (raw -> bronze -> silver -> gold)"]
+  subgraph Pipeline["Data Platform"]
     I[Ingestion]
-    Q[Data Quality (Pandera)]
-    T[Transforms + Star Schema]
+    Q[Data Quality - Pandera]
+    T[Transforms and Star Schema]
   end
 
   subgraph ML["ML Layer"]
     M1[Churn Model]
     M2[Next Purchase Model]
-    M3[LTV / Segmentation]
-    R[Recommendation / Prioritization]
+    M3[LTV Segmentation]
+    R[Recommendation Prioritization]
   end
 
   subgraph Serving["Serving & Apps"]
     A1[Batch Scoring]
-    A2[API (FastAPI optional)]
+    A2[API FastAPI Optional]
     D1[Executive Streamlit Dashboard]
     D2[Sales Analytics Streamlit]
   end
@@ -40,86 +47,67 @@ flowchart TD
   A2 --> D2
 ```
 
-## Module Composition
+## How Repositories Compose The Platform
 
 ```mermaid
 flowchart LR
-  R1[Revenue-Intelligence-Platform] --> P[Customer Intelligence Platform]
+  R1[Revenue-Intelligence-Platform] --> P[Customer Intelligence Platform Suite]
   R2[churn-prediction] --> P
   R3[amazon-sales-analysis] --> P
   R4[analise-vendas-python] --> P
   R5[data-senior-analytics] --> P
 ```
 
-## Repository Layout
+## Modules
+
+| Module Path | Source Repository | Status |
+|---|---|---|
+| [modules/revenue-intelligence](./modules/revenue-intelligence) | Revenue-Intelligence-Platform-End-to-End-Analytics-ML-System | Integrated via subtree |
+| [modules/churn-prediction](./modules/churn-prediction) | churn-prediction | Integrated via subtree |
+| [modules/amazon-sales-analysis](./modules/amazon-sales-analysis) | amazon-sales-analysis | Integrated via subtree |
+| [modules/analise-vendas-python](./modules/analise-vendas-python) | analise-vendas-python | Integrated via subtree |
+| [modules/data-senior-analytics](./modules/data-senior-analytics) | data-senior-analytics | Integrated via subtree |
+
+## Monorepo Layout
 
 ```text
 revenue-intelligence-platform-suite/
-|- README.md
-|- docs/
-|  |- architecture.md
-|  |- data-contracts.md
-|  `- adr/
-|- datasets/
-|- modules/
-|  |- revenue-intelligence/
-|  |- churn-prediction/
-|  |- amazon-sales-analysis/
-|  |- analise-vendas-python/
-|  `- data-senior-analytics/
-|- platform/
-|  |- ingestion/
-|  |- transform/
-|  |- modeling/
-|  |- quality/
-|  |- orchestration/
-|  `- serving/
 |- apps/
-|  |- executive-dashboard/
-|  `- sales-analytics/
+|- datasets/
+|- docs/
+|- modules/
 |- packages/
-|  `- common/
+|- platform/
 |- tests/
 `- pyproject.toml
 ```
 
-## Module Mapping (Closed Scope)
+## Executive Docs
 
-- `modules/revenue-intelligence` -> Revenue-Intelligence-Platform-End-to-End-Analytics-ML-System
-- `modules/churn-prediction` -> churn-prediction
-- `modules/amazon-sales-analysis` -> amazon-sales-analysis
-- `modules/analise-vendas-python` -> analise-vendas-python
-- `modules/data-senior-analytics` -> data-senior-analytics
-
-## Integration Strategy
-
-- Default strategy: `git subtree` para monorepo real e simples de clonar.
-- Alternative strategy: `git submodule` se quiser atualizacao desacoplada por repo.
-
-Subtree import example:
-
-```bash
-git remote add churn https://github.com/<user>/churn-prediction.git
-git subtree add --prefix modules/churn-prediction churn main --squash
-```
+- [Executive Brief](./docs/executive-brief.md)
+- [KPI Scorecard](./docs/kpi-scorecard.md)
 
 ## Quickstart
 
 ```bash
 python -m venv .venv
-# Linux/macOS
-source .venv/bin/activate
-# Windows PowerShell
 .venv\Scripts\Activate.ps1
 pip install -e ".[dev]"
 streamlit run apps/executive-dashboard/app.py
 ```
 
-## Business Impact
+## Subtree Update Example
 
-- Identificacao de clientes de alto valor e alto risco de churn.
-- Priorizacao acionavel para retencao, receita incremental e eficiencia comercial.
-- Simulacao de uplift com trilha de qualidade e reproducibilidade.
+```bash
+git fetch churn-prediction main
+git subtree pull --prefix modules/churn-prediction churn-prediction main --squash
+```
+
+## Business Outcomes
+
+- Melhor priorizacao de clientes de alto valor e alto risco
+- Acoes mais rapidas de retencao e crescimento de receita
+- Reproducibilidade de pipeline e rastreabilidade de modelo
 
 ## Tech Stack
 
