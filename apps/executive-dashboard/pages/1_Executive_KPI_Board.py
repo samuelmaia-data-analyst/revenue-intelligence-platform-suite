@@ -1,9 +1,16 @@
-from pathlib import Path
 import json
+import sys
+from pathlib import Path
 
 import altair as alt
 import pandas as pd
 import streamlit as st
+
+ROOT = Path(__file__).resolve().parents[3]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+if str(ROOT / "packages") not in sys.path:
+    sys.path.insert(0, str(ROOT / "packages"))
 
 from platform_connectors import SQLiteTelemetryConnector
 from platform_observability import ActionAdoptionLogger
@@ -17,7 +24,6 @@ with st.sidebar:
     if st.button("Home: Revenue-Intelligence-Platform-Suite"):
         st.switch_page("app.py")
 
-ROOT = Path(__file__).resolve().parents[3]
 SALES_PATH = ROOT / "modules" / "analise-vendas-python" / "dados_processados" / "vendas_simples.csv"
 CUSTOMER_PATH = (
     ROOT / "modules" / "revenue-intelligence" / "data" / "raw" / "E-commerce Customer Behavior - Sheet1.csv"
