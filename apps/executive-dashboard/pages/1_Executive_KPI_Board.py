@@ -5,6 +5,9 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
+from platform_connectors import SQLiteTelemetryConnector
+from platform_observability import ActionAdoptionLogger
+
 st.set_page_config(page_title="Executive KPI Board", layout="wide")
 
 if st.button("Voltar para Revenue-Intelligence-Platform-Suite"):
@@ -21,6 +24,8 @@ CUSTOMER_PATH = (
 )
 METRICS_PATH = ROOT / "modules" / "revenue-intelligence" / "data" / "processed" / "metrics_report.json"
 SHOWCASE_SUMMARY_PATH = ROOT / "reports" / "showcase" / "summary.json"
+TELEMETRY_DB_PATH = ROOT / "reports" / "showcase" / "enterprise_telemetry.sqlite"
+SHOWCASE_OUTPUT_DIR = ROOT / "reports" / "showcase"
 
 
 @st.cache_data(show_spinner=False)
@@ -38,6 +43,12 @@ def load_showcase_summary() -> dict:
         return {}
     with SHOWCASE_SUMMARY_PATH.open("r", encoding="utf-8") as fp:
         return json.load(fp)
+
+
+@st.cache_data(show_spinner=False)
+def load_enterprise_telemetry() -> pd.DataFrame:
+    connector = SQLiteTelemetryConnector(TELEMETRY_DB_PATH)
+    return connector.fetch_monthly_revenue_telemetry()
 
 
 def build_risk_score(df: pd.DataFrame) -> pd.DataFrame:
@@ -64,6 +75,7 @@ def build_risk_score(df: pd.DataFrame) -> pd.DataFrame:
 try:
     sales_df, customer_df, model_metrics = load_data()
     showcase_summary = load_showcase_summary()
+    telemetry_df = load_enterprise_telemetry()
 except Exception as exc:
     st.error("Could not load real module data. Check repository paths and file integrity.")
     st.exception(exc)
@@ -74,13 +86,6 @@ sales_df["SALES"] = pd.to_numeric(sales_df["SALES"], errors="coerce").fillna(0)
 sales_df = sales_df.dropna(subset=["ORDERDATE"]).copy()
 sales_df["month"] = sales_df["ORDERDATE"].dt.to_period("M").astype(str)
 monthly_revenue = sales_df.groupby("month", as_index=False)["SALES"].sum().sort_values("month")
-
-if len(monthly_revenue) >= 2:
-    monthly_revenue["nrr_proxy"] = (
-        monthly_revenue["SALES"] / monthly_revenue["SALES"].shift(1)
-    ).fillna(1.0).clip(lower=0.6, upper=1.2)
-else:
-    monthly_revenue["nrr_proxy"] = 1.0
 
 risk_df = build_risk_score(customer_df)
 
@@ -100,8 +105,12 @@ else:
     risk_view = risk_df.copy()
 
 current_revenue = float(monthly_revenue["SALES"].iloc[-1]) if not monthly_revenue.empty else 0.0
-current_nrr = float(monthly_revenue["nrr_proxy"].iloc[-1]) if not monthly_revenue.empty else 1.0
-gross_churn = max(0.0, 1 - current_nrr)
+if telemetry_df.empty:
+    current_nrr = 1.0
+    gross_churn = 0.0
+else:
+    current_nrr = float(telemetry_df["nrr"].iloc[-1])
+    gross_churn = float(telemetry_df["gross_churn"].iloc[-1])
 value_at_risk = float(risk_view["Revenue at Risk (USD)"].sum())
 expected_recovery = value_at_risk * (uplift / 100)
 roi = ((expected_recovery - budget) / budget) if budget else 0.0
@@ -174,8 +183,12 @@ with left:
     st.subheader("Revenue Trend (Real Data)")
     st.line_chart(monthly_revenue.set_index("month")["SALES"])
 with right:
-    st.subheader("NRR Proxy Trend (MoM)")
-    st.line_chart((monthly_revenue.set_index("month")["nrr_proxy"] * 100).round(2))
+    st.subheader("NRR Telemetry Trend (MoM)")
+    if telemetry_df.empty:
+        st.info("No telemetry data available. Run `python scripts/run_showcase_demo.py` first.")
+    else:
+        nrr_series = telemetry_df.set_index("month")["nrr"] * 100
+        st.line_chart(nrr_series.round(2))
 
 if showcase_summary:
     st.info(
@@ -249,6 +262,28 @@ register = register[
     ]
 ]
 st.dataframe(register, width="stretch", hide_index=True)
+
+st.markdown("---")
+st.subheader("Action Adoption Monitoring")
+adoption_logger = ActionAdoptionLogger(SHOWCASE_OUTPUT_DIR)
+event_rows = register.copy()
+event_rows["action_id"] = event_rows["Customer ID"].astype(str) + "::" + event_rows["Recommended Action"]
+event_options = event_rows["action_id"].tolist()
+selected_action_id = st.selectbox("Action ID", options=event_options)
+selected_outcome = st.selectbox("Outcome", options=["accepted", "in_progress", "rejected"])
+if st.button("Log Action Outcome", use_container_width=False):
+    selected_row = event_rows[event_rows["action_id"] == selected_action_id].iloc[0]
+    adoption_logger.log(
+        action_id=selected_action_id,
+        outcome=selected_outcome,
+        metadata={
+            "expected_recovery_usd": float(selected_row["Expected Recovery (USD)"]),
+            "owner": selected_row["Owner"],
+            "eta": selected_row["ETA"],
+            "status": selected_row["Status"],
+        },
+    )
+    st.success("Action outcome logged in reports/showcase/action_adoption_log.csv and .jsonl")
 
 st.markdown("---")
 st.subheader("Scenario Analysis")

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "customer-intelligence-platform"
-version = "0.1.0"
+version = "1.0.0"
 description = "Unified Revenue + Retention intelligence platform"
 readme = "README.md"
 requires-python = ">=3.10"

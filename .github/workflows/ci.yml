@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  root-quality:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,7 +18,55 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
-      - name: Lint
+      - name: Lint (root)
         run: ruff check apps platform packages scripts tests main.py
-      - name: Test
+      - name: Tests (root + contracts)
         run: pytest
+
+  module-quality:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module_path:
+          - modules/revenue-intelligence
+          - modules/churn-prediction
+          - modules/amazon-sales-analysis
+          - modules/data-senior-analytics
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install base deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Install module deps
+        run: |
+          if [ -f "${{ matrix.module_path }}/requirements-dev.txt" ]; then
+            pip install -r "${{ matrix.module_path }}/requirements-dev.txt"
+          elif [ -f "${{ matrix.module_path }}/requirements.txt" ]; then
+            pip install -r "${{ matrix.module_path }}/requirements.txt"
+          fi
+      - name: Lint module
+        run: ruff check "${{ matrix.module_path }}"
+      - name: Test module
+        working-directory: ${{ matrix.module_path }}
+        run: pytest -q tests
+
+  executive-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Generate showcase artifacts
+        run: python scripts/run_showcase_demo.py
+      - name: Executive app smoke
+        run: pytest -q tests/test_executive_app_smoke.py tests/test_showcase_smoke.py

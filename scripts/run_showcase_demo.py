@@ -1,18 +1,25 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 import pandas as pd
 
-
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "packages"))
+
+from common.contracts import validate_contract  # noqa: E402
+from platform_connectors import SQLiteTelemetryConnector, seed_demo_telemetry  # noqa: E402
+
 SALES_PATH = ROOT / "modules" / "analise-vendas-python" / "dados_processados" / "vendas_simples.csv"
 CUSTOMER_PATH = (
     ROOT / "modules" / "revenue-intelligence" / "data" / "raw" / "E-commerce Customer Behavior - Sheet1.csv"
 )
 MODEL_METRICS_PATH = ROOT / "modules" / "revenue-intelligence" / "data" / "processed" / "metrics_report.json"
 OUTPUT_DIR = ROOT / "reports" / "showcase"
+TELEMETRY_DB_PATH = OUTPUT_DIR / "enterprise_telemetry.sqlite"
 
 
 def build_risk_score(df: pd.DataFrame) -> pd.DataFrame:
@@ -62,18 +69,18 @@ def main() -> None:
     risk_df = build_risk_score(customer_df)
     top_actions = risk_df.sort_values("Revenue at Risk (USD)", ascending=False).head(50).copy()
 
+    seed_demo_telemetry(TELEMETRY_DB_PATH, monthly_revenue)
+    telemetry = SQLiteTelemetryConnector(TELEMETRY_DB_PATH)
+    latest_kpis = telemetry.fetch_latest_kpis()
+
     with MODEL_METRICS_PATH.open("r", encoding="utf-8") as fp:
         model_metrics = json.load(fp)
 
     summary = {
-        "latest_month": monthly_revenue["month"].iloc[-1] if not monthly_revenue.empty else None,
-        "latest_revenue_usd": float(monthly_revenue["SALES"].iloc[-1]) if not monthly_revenue.empty else 0.0,
-        "nrr_proxy_latest": float(monthly_revenue["nrr_proxy"].iloc[-1]) if not monthly_revenue.empty else 1.0,
-        "gross_churn_proxy_latest": float(
-            max(0.0, 1 - monthly_revenue["nrr_proxy"].iloc[-1])
-        )
-        if not monthly_revenue.empty
-        else 0.0,
+        "latest_month": latest_kpis["latest_month"] or "",
+        "latest_revenue_usd": float(latest_kpis["latest_revenue_usd"]),
+        "nrr_latest": float(latest_kpis["nrr_latest"]),
+        "gross_churn_latest": float(latest_kpis["gross_churn_latest"]),
         "total_value_at_risk_usd": float(risk_df["Revenue at Risk (USD)"].sum()),
         "top_50_value_at_risk_usd": float(top_actions["Revenue at Risk (USD)"].sum()),
         "churn_auc_temporal_test": float(
@@ -82,10 +89,16 @@ def main() -> None:
         "next_purchase_auc_temporal_test": float(
             model_metrics.get("next_purchase_30d", {}).get("temporal_test_roc_auc", 0.0)
         ),
+        "telemetry_source": latest_kpis["source_system"],
     }
 
     monthly_revenue.to_csv(OUTPUT_DIR / "monthly_revenue.csv", index=False)
     top_actions.to_csv(OUTPUT_DIR / "top_actions.csv", index=False)
+
+    errors = validate_contract(summary, "showcase_summary.schema.json")
+    if errors:
+        raise ValueError(f"Contract validation failed for showcase summary: {errors}")
+
     with (OUTPUT_DIR / "summary.json").open("w", encoding="utf-8") as fp:
         json.dump(summary, fp, indent=2)
 
@@ -93,6 +106,7 @@ def main() -> None:
     print(f"- {OUTPUT_DIR / 'monthly_revenue.csv'}")
     print(f"- {OUTPUT_DIR / 'top_actions.csv'}")
     print(f"- {OUTPUT_DIR / 'summary.json'}")
+    print(f"- {TELEMETRY_DB_PATH}")
 
 
 if __name__ == "__main__":
