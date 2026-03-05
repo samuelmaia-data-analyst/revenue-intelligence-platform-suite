@@ -6,14 +6,21 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
-ROOT = Path(__file__).resolve().parents[3]
+def _find_repo_root(start: Path) -> Path:
+    for candidate in (start, *start.parents):
+        if (candidate / "pyproject.toml").exists() and (candidate / "platform_connectors").exists():
+            return candidate
+    return Path(__file__).resolve().parents[3]
+
+
+ROOT = _find_repo_root(Path(__file__).resolve())
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 if str(ROOT / "packages") not in sys.path:
     sys.path.insert(0, str(ROOT / "packages"))
 
-from platform_connectors import SQLiteTelemetryConnector, seed_demo_telemetry
-from platform_observability import ActionAdoptionLogger
+from platform_connectors import SQLiteTelemetryConnector, seed_demo_telemetry  # noqa: E402
+from platform_observability import ActionAdoptionLogger  # noqa: E402
 
 st.set_page_config(page_title="Executive KPI Board", layout="wide")
 

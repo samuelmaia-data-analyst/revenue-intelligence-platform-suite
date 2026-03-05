@@ -2,6 +2,14 @@ from pathlib import Path
 
 import streamlit as st
 
+
+def _find_repo_root(start: Path) -> Path:
+    for candidate in (start, *start.parents):
+        if (candidate / "pyproject.toml").exists() and (candidate / "platform_connectors").exists():
+            return candidate
+    return Path(__file__).resolve().parents[3]
+
+
 st.set_page_config(page_title="Modules Access", layout="wide")
 
 if st.button("Voltar para Revenue-Intelligence-Platform-Suite"):
@@ -11,7 +19,7 @@ with st.sidebar:
     if st.button("Home: Revenue-Intelligence-Platform-Suite"):
         st.switch_page("app.py")
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = _find_repo_root(Path(__file__).resolve())
 
 st.title("Modules Access")
 st.caption("Single place to access all integrated repositories and demos.")
