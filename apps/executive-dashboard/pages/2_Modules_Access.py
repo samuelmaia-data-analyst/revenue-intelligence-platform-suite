@@ -67,10 +67,9 @@ for module in modules:
         if module["demo"]:
             st.markdown(f"- Public demo: {module['demo']}")
         else:
-            st.markdown("- Public demo: planned (roadmap)")
-    st.caption(
-        f"Integration status: {'integrated in monorepo' if module_exists else 'module path missing'}"
-    )
+            st.markdown("- Public demo: available on request")
+    if not module_exists:
+        st.caption("Module path not found in current deployment.")
     st.markdown("---")
 
 st.subheader("Flagship Governance and Proof")
