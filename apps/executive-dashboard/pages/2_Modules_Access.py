@@ -58,7 +58,6 @@ for module in modules:
     module_exists = (ROOT / module["path"]).exists()
     st.subheader(module["name"])
     st.write(module["role"])
-    st.code(module["path"], language="text")
     col1, col2, col3 = st.columns(3)
     with col1:
         st.markdown(f"- Monorepo path: `{module['path']}`")
@@ -68,8 +67,10 @@ for module in modules:
         if module["demo"]:
             st.markdown(f"- Public demo: {module['demo']}")
         else:
-            st.markdown("- Public demo: not published")
-    st.caption(f"Integrated in this monorepo: {'yes' if module_exists else 'missing'}")
+            st.markdown("- Public demo: planned (roadmap)")
+    st.caption(
+        f"Integration status: {'integrated in monorepo' if module_exists else 'module path missing'}"
+    )
     st.markdown("---")
 
 st.subheader("Flagship Governance and Proof")
