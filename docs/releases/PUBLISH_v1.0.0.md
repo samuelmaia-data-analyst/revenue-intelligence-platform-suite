@@ -24,6 +24,15 @@ gh release create v1.0.0 \
   --notes-file docs/releases/v1.0.0.md
 ```
 
+## 4b) GitHub Release (without gh CLI)
+- Run workflow: `.github/workflows/publish-release.yml`
+- Event: `workflow_dispatch`
+- Inputs:
+  - `tag`: `v1.0.0`
+  - `notes_file`: `docs/releases/v1.0.0.md`
+
+This workflow creates or updates the release from the notes file.
+
 ## 5) Quarterly cadence (after v1.0.0)
 ```bash
 # every quarter, create/update the quarter note from template

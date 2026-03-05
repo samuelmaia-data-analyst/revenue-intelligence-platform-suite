@@ -1,0 +1,54 @@
+name: publish-release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to publish (example: v1.0.0)"
+        required: true
+        default: "v1.0.0"
+      notes_file:
+        description: "Release notes file path"
+        required: true
+        default: "docs/releases/v1.0.0.md"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve tag and notes file
+        id: vars
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "tag=${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
+            echo "notes_file=${{ inputs.notes_file }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+            echo "notes_file=docs/releases/${GITHUB_REF_NAME}.md" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Validate notes file
+        shell: bash
+        run: |
+          test -f "${{ steps.vars.outputs.notes_file }}"
+
+      - name: Create or update GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.vars.outputs.tag }}
+          name: ${{ steps.vars.outputs.tag }} - Flagship Platform Baseline
+          bodyFile: ${{ steps.vars.outputs.notes_file }}
+          allowUpdates: true
+          updateOnlyUnreleased: false
+          generateReleaseNotes: false
