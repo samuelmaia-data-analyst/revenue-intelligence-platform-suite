@@ -22,46 +22,54 @@ modules = [
         "path": "modules/revenue-intelligence",
         "role": "Revenue analytics, scoring, recommendations, executive assets",
         "demo": "https://revenue-intelligence-platform.streamlit.app/",
+        "repo": "https://github.com/samuelmaia-data-analyst/Revenue-Intelligence-Platform-End-to-End-Analytics-ML-System",
     },
     {
         "name": "Churn Prediction",
         "path": "modules/churn-prediction",
         "role": "Churn modeling, orchestration patterns, ML tracking",
         "demo": "",
+        "repo": "https://github.com/samuelmaia-data-analyst/churn-prediction",
     },
     {
         "name": "Amazon Sales Analysis",
         "path": "modules/amazon-sales-analysis",
         "role": "Sales leakage and KPI analytics with contracts and CI patterns",
         "demo": "",
+        "repo": "https://github.com/samuelmaia-data-analyst/amazon-sales-analysis",
     },
     {
         "name": "Analise Vendas Python",
         "path": "modules/analise-vendas-python",
         "role": "Operational sales analytics and processed star-style datasets",
         "demo": "https://analys-vendas-python.streamlit.app/",
+        "repo": "https://github.com/samuelmaia-data-analyst/analise-vendas-python",
     },
     {
         "name": "Data Senior Analytics",
         "path": "modules/data-senior-analytics",
         "role": "Business-focused analytics pipeline and dashboard outputs",
         "demo": "https://data-analytics-sr.streamlit.app",
+        "repo": "https://github.com/samuelmaia-data-analyst/data-senior-analytics",
     },
 ]
 
 for module in modules:
-    module_abs = ROOT / module["path"]
+    module_exists = (ROOT / module["path"]).exists()
     st.subheader(module["name"])
     st.write(module["role"])
-    st.code(str(module_abs), language="text")
-    col1, col2 = st.columns(2)
+    st.code(module["path"], language="text")
+    col1, col2, col3 = st.columns(3)
     with col1:
-        st.markdown(f"- Local path: `{module['path']}`")
+        st.markdown(f"- Monorepo path: `{module['path']}`")
     with col2:
+        st.markdown(f"- Source repo: {module['repo']}")
+    with col3:
         if module["demo"]:
             st.markdown(f"- Public demo: {module['demo']}")
         else:
             st.markdown("- Public demo: not published")
+    st.caption(f"Integrated in this monorepo: {'yes' if module_exists else 'missing'}")
     st.markdown("---")
 
 st.subheader("Flagship Governance and Proof")
