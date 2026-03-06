@@ -378,3 +378,9 @@ with c:
     st.write(f"- Last sales date in dataset: **{last_sales_date}**")
     st.write(f"- Customer file updated: **{pd.to_datetime(customer_file_mtime, unit='s').date()}**")
     st.write(f"- Dashboard generated at: **{pd.Timestamp.utcnow().strftime('%Y-%m-%d %H:%M UTC')}**")
+
+st.markdown("---")
+st.caption(
+    "Author: [LinkedIn](https://linkedin.com/in/samuelmaia-analytics) | "
+    "[GitHub](https://github.com/samuelmaia-analytics)"
+)

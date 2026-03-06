@@ -87,3 +87,9 @@ st.markdown("- Use case: `docs/showcase-use-case.md`")
 st.markdown("- Proof: `docs/proof.md`")
 st.markdown("- KPI scorecard: `docs/kpi-scorecard.md`")
 st.markdown("- Security: `SECURITY.md`")
+
+st.markdown("---")
+st.caption(
+    "Author: [LinkedIn](https://linkedin.com/in/samuelmaia-analytics) | "
+    "[GitHub](https://github.com/samuelmaia-analytics)"
+)

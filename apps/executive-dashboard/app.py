@@ -74,3 +74,9 @@ st.write(
     "This flagship app is the access layer that unifies all modules into one platform "
     "experience, with business decision support as the core outcome."
 )
+
+st.markdown("---")
+st.caption(
+    "Author: [LinkedIn](https://linkedin.com/in/samuelmaia-analytics) | "
+    "[GitHub](https://github.com/samuelmaia-analytics)"
+)
