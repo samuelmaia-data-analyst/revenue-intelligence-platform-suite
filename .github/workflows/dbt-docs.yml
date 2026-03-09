@@ -37,6 +37,25 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r modules/revenue-intelligence/requirements-dbt.txt
 
+      - name: Validate required secrets
+        env:
+          DBT_BIGQUERY_PROJECT: ${{ secrets.DBT_BIGQUERY_PROJECT }}
+          DBT_BIGQUERY_DATASET: ${{ secrets.DBT_BIGQUERY_DATASET }}
+          DBT_BIGQUERY_LOCATION: ${{ secrets.DBT_BIGQUERY_LOCATION }}
+          DBT_BIGQUERY_KEYFILE_JSON: ${{ secrets.DBT_BIGQUERY_KEYFILE_JSON }}
+        run: |
+          missing=0
+          for key in DBT_BIGQUERY_PROJECT DBT_BIGQUERY_DATASET DBT_BIGQUERY_LOCATION DBT_BIGQUERY_KEYFILE_JSON; do
+            if [ -z "${!key}" ]; then
+              echo "Missing required secret: $key"
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            echo "Set required repository secrets before running dbt-docs."
+            exit 1
+          fi
+
       - name: Create dbt profile for CI
         env:
           DBT_BIGQUERY_PROJECT: ${{ secrets.DBT_BIGQUERY_PROJECT }}
@@ -45,8 +64,8 @@ jobs:
           DBT_BIGQUERY_KEYFILE_JSON: ${{ secrets.DBT_BIGQUERY_KEYFILE_JSON }}
         run: |
           mkdir -p .github/dbt
-          echo "$DBT_BIGQUERY_KEYFILE_JSON" > .github/dbt/service_account.json
-          cat <<'EOF' > .github/dbt/profiles.yml
+          printf '%s' "$DBT_BIGQUERY_KEYFILE_JSON" > .github/dbt/service_account.json
+          cat <<EOF > .github/dbt/profiles.yml
           revenue_intelligence:
             target: dev
             outputs:
