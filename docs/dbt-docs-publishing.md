@@ -9,17 +9,11 @@ In repository settings:
 1. Open `Settings -> Pages`
 2. In `Build and deployment`, set `Source` to `GitHub Actions`
 
-## 2. Add repository secrets
+## 2. Repository secrets
 
-Create these repository secrets:
-- `DBT_BIGQUERY_PROJECT`
-- `DBT_BIGQUERY_DATASET`
-- `DBT_BIGQUERY_LOCATION`
-- `DBT_BIGQUERY_KEYFILE_JSON`
-
-Notes:
-- `DBT_BIGQUERY_KEYFILE_JSON` must be the full JSON content of a BigQuery service account key.
-- Service account needs permissions to read/write the target dataset.
+No secrets are required for docs publishing.
+The workflow uses a local `duckdb` target in CI and generates docs with
+`--empty-catalog` to publish lineage/documentation reliably.
 
 ## 3. Run the workflow
 
@@ -36,5 +30,4 @@ After a successful run, open:
 
 If publication fails, check:
 - Pages source configuration
-- missing/invalid secrets
-- BigQuery permissions for the service account
+- repository Actions permissions

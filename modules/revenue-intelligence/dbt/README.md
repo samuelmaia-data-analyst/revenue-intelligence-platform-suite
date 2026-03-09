@@ -49,11 +49,8 @@ GitHub Pages publication is automated by:
 Expected URL pattern:
 - `https://<github-user>.github.io/revenue-intelligence-platform-suite/`
 
-Required GitHub repository secrets:
-- `DBT_BIGQUERY_PROJECT`
-- `DBT_BIGQUERY_DATASET`
-- `DBT_BIGQUERY_LOCATION`
-- `DBT_BIGQUERY_KEYFILE_JSON`
+CI publication does not require warehouse secrets. It uses a local `duckdb`
+target and generates docs with an empty catalog for stable lineage publishing.
 
 Local docs generation:
 

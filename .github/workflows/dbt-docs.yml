@@ -37,47 +37,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r modules/revenue-intelligence/requirements-dbt.txt
 
-      - name: Validate required secrets
-        env:
-          DBT_BIGQUERY_PROJECT: ${{ secrets.DBT_BIGQUERY_PROJECT }}
-          DBT_BIGQUERY_DATASET: ${{ secrets.DBT_BIGQUERY_DATASET }}
-          DBT_BIGQUERY_LOCATION: ${{ secrets.DBT_BIGQUERY_LOCATION }}
-          DBT_BIGQUERY_KEYFILE_JSON: ${{ secrets.DBT_BIGQUERY_KEYFILE_JSON }}
-        run: |
-          missing=0
-          for key in DBT_BIGQUERY_PROJECT DBT_BIGQUERY_DATASET DBT_BIGQUERY_LOCATION DBT_BIGQUERY_KEYFILE_JSON; do
-            if [ -z "${!key}" ]; then
-              echo "Missing required secret: $key"
-              missing=1
-            fi
-          done
-          if [ "$missing" -ne 0 ]; then
-            echo "Set required repository secrets before running dbt-docs."
-            exit 1
-          fi
-
-      - name: Create dbt profile for CI
-        env:
-          DBT_BIGQUERY_PROJECT: ${{ secrets.DBT_BIGQUERY_PROJECT }}
-          DBT_BIGQUERY_DATASET: ${{ secrets.DBT_BIGQUERY_DATASET }}
-          DBT_BIGQUERY_LOCATION: ${{ secrets.DBT_BIGQUERY_LOCATION }}
-          DBT_BIGQUERY_KEYFILE_JSON: ${{ secrets.DBT_BIGQUERY_KEYFILE_JSON }}
+      - name: Create dbt profile for CI (duckdb)
         run: |
           mkdir -p .github/dbt
-          printf '%s' "$DBT_BIGQUERY_KEYFILE_JSON" > .github/dbt/service_account.json
           cat <<EOF > .github/dbt/profiles.yml
           revenue_intelligence:
-            target: dev
+            target: ci
             outputs:
-              dev:
-                type: bigquery
-                method: service-account
-                keyfile: .github/dbt/service_account.json
-                project: ${DBT_BIGQUERY_PROJECT}
-                dataset: ${DBT_BIGQUERY_DATASET}
+              ci:
+                type: duckdb
+                path: .github/dbt/revenue_intelligence.duckdb
+                schema: analytics
                 threads: 4
-                location: ${DBT_BIGQUERY_LOCATION}
-                priority: interactive
           EOF
 
       - name: Generate dbt docs
@@ -85,8 +56,8 @@ jobs:
           DBT_PROFILES_DIR: .github/dbt
         run: |
           dbt deps --project-dir modules/revenue-intelligence/dbt
-          dbt parse --project-dir modules/revenue-intelligence/dbt --target dev
-          dbt docs generate --project-dir modules/revenue-intelligence/dbt --target dev
+          dbt parse --project-dir modules/revenue-intelligence/dbt --target ci
+          dbt docs generate --project-dir modules/revenue-intelligence/dbt --target ci --empty-catalog
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
