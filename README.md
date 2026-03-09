@@ -147,6 +147,7 @@ powershell -ExecutionPolicy Bypass -File .\modules\revenue-intelligence\scripts\
 
 dbt lineage docs are publishable via GitHub Pages using `.github/workflows/dbt-docs.yml`.
 Setup guide: [docs/dbt-docs-publishing.md](./docs/dbt-docs-publishing.md)
+Published docs URL: https://samuelmaia-analytics.github.io/revenue-intelligence-platform-suite/
 
 ### Expected Outputs
 - `reports/showcase/summary.json`

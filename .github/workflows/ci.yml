@@ -70,3 +70,34 @@ jobs:
         run: python scripts/run_showcase_demo.py
       - name: Executive app smoke
         run: pytest -q tests/test_executive_app_smoke.py tests/test_showcase_smoke.py
+
+  dbt-parse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dbt deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r modules/revenue-intelligence/requirements-dbt.txt
+      - name: Create local dbt profile
+        run: |
+          mkdir -p .github/dbt
+          cat <<EOF > .github/dbt/profiles.yml
+          revenue_intelligence:
+            target: ci
+            outputs:
+              ci:
+                type: duckdb
+                path: .github/dbt/revenue_intelligence.duckdb
+                schema: analytics
+                threads: 4
+          EOF
+      - name: Parse dbt project
+        env:
+          DBT_PROFILES_DIR: .github/dbt
+        run: |
+          dbt deps --project-dir modules/revenue-intelligence/dbt
+          dbt parse --project-dir modules/revenue-intelligence/dbt --target ci
