@@ -205,6 +205,8 @@ powershell -ExecutionPolicy Bypass -File .\modules\revenue-intelligence\scripts\
 Publicacao de docs dbt no GitHub Pages:
 - Workflow: `.github/workflows/dbt-docs.yml`
 - Guia: [docs/dbt-docs-publishing.md](./docs/dbt-docs-publishing.md)
+- URL publicada: https://samuelmaia-analytics.github.io/revenue-intelligence-platform-suite/
+- Validacao no CI: job `dbt-parse` em `.github/workflows/ci.yml`
 
 ## Atualização de Subtree
 

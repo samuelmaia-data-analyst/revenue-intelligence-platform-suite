@@ -363,3 +363,9 @@ Com Snowflake + dbt:
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\run_modern_data_stack_demo.ps1 -Target snowflake -RunDbt
 ```
+
+## Atualizacao CI e Docs dbt
+
+- URL publicada dos docs: https://samuelmaia-analytics.github.io/revenue-intelligence-platform-suite/
+- Workflow de publicacao: `.github/workflows/dbt-docs.yml`
+- Validacao no CI: job `dbt-parse` em `.github/workflows/ci.yml`

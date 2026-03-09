@@ -333,6 +333,8 @@ dbt docs publish:
 - Workflow: `.github/workflows/dbt-docs.yml`
 - Output: GitHub Pages (lineage + model docs)
 - Setup guide: `docs/dbt-docs-publishing.md`
+- Published URL: `https://samuelmaia-analytics.github.io/revenue-intelligence-platform-suite/`
+- CI guardrail: `dbt-parse` job in `.github/workflows/ci.yml`
 
 ## CLI
 
