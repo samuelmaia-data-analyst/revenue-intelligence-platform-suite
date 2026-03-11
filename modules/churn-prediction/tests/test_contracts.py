@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from amazon_sales_analysis.contracts import RAW_REQUIRED_COLUMNS, enforce_raw_contract
+from churn_prediction.contracts import RAW_REQUIRED_COLUMNS, enforce_raw_contract
 
 
 def _base_df() -> pd.DataFrame:

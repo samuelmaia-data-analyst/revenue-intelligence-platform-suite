@@ -25,7 +25,7 @@ def main() -> None:
 
     root = Path(__file__).resolve().parent.parent
     pyproject = root / "pyproject.toml"
-    init_file = root / "src" / "amazon_sales_analysis" / "__init__.py"
+    init_file = root / "src" / "churn_prediction" / "__init__.py"
 
     _replace_version(pyproject, r'^version = ".*"$', f'version = "{version}"')
     _replace_version(init_file, r'^__version__ = ".*"$', f'__version__ = "{version}"')

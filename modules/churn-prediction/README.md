@@ -74,9 +74,14 @@ This project answers:
 4. Opportunity ranking by category-level discount leakage.
 5. Executive dashboards and artifacts for decision support.
 
+## Implementation Notes
+- Primary package: `src/churn_prediction/`
+- Shared monorepo business logic: `packages/portfolio_analytics_shared/`
+- Legacy compatibility namespace: `src/amazon_sales_analysis/`
+
 ## Architecture
 ```text
-amazon-sales-analysis/
+churn-prediction/
 |-- app/
 |   `-- streamlit_app.py
 |-- assets/
@@ -94,17 +99,22 @@ amazon-sales-analysis/
 |   `-- tables/
 |-- scripts/
 |   `-- run_pipeline.py
-|-- src/amazon_sales_analysis/
+|-- src/churn_prediction/
 |   |-- analytics.py
 |   |-- config.py
+|   |-- contracts.py
 |   |-- data_ingestion.py
 |   |-- data_preprocessing.py
 |   |-- eda.py
 |   |-- evaluation.py
 |   |-- feature_engineering.py
 |   |-- logging_config.py
+|   |-- metrics.py
 |   |-- modeling.py
+|   |-- quality.py
+|   |-- table_organization.py
 |   `-- visualization.py
+|-- src/amazon_sales_analysis/   # legacy compatibility aliases
 |-- tests/
 |-- main.py
 |-- pyproject.toml
@@ -135,10 +145,10 @@ Python, Pandas, Plotly, Streamlit, Seaborn, Matplotlib, Pytest.
 ## How to Run
 ### Local
 ```bash
-git clone https://github.com/samuelmaia-analytics/amazon-sales-analysis.git
-cd amazon-sales-analysis
+git clone https://github.com/samuelmaia-analytics/churn-prediction.git
+cd churn-prediction
 pip install -r requirements.txt
-python main.py
+python scripts/run_pipeline.py
 streamlit run app/streamlit_app.py
 ```
 
@@ -172,6 +182,8 @@ pytest
 - CI artifacts exported in `reports/metrics/`:
   - `pytest-results.xml`
   - `coverage.xml`
+
+Coverage is enforced on `src/churn_prediction`, which is the canonical package for ongoing development.
 
 ## Release Process
 1. Update changelog with a new section in `CHANGELOG.md` (format `## [x.y.z] - YYYY-MM-DD`).

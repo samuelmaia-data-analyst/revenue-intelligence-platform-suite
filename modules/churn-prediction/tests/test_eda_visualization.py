@@ -5,7 +5,7 @@ import pandas as pd
 
 matplotlib.use("Agg", force=True)
 
-from amazon_sales_analysis import eda, visualization
+from churn_prediction import eda, visualization
 
 
 def _eda_fixture() -> pd.DataFrame:

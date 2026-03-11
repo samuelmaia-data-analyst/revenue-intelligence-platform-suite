@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from amazon_sales_analysis.quality import enforce_clean_quality_gates
+from churn_prediction.quality import enforce_clean_quality_gates
 
 
 def _base_df() -> pd.DataFrame:

@@ -1,6 +1,6 @@
 import pandas as pd
 
-from amazon_sales_analysis.evaluation import build_executive_summary, calculate_business_impact
+from churn_prediction.evaluation import build_executive_summary, calculate_business_impact
 
 
 def _featured_df() -> pd.DataFrame:

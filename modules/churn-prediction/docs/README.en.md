@@ -61,6 +61,11 @@ Recovering 5% of current discount leakage can add about **$252K** in net revenue
 ## Methodology
 Ingestion -> Cleaning -> Feature Engineering -> Evaluation -> Visualization
 
+## Implementation Notes
+- Primary package: `src/churn_prediction/`
+- Shared business logic reused from the monorepo: `packages/portfolio_analytics_shared/`
+- Legacy compatibility namespace: `src/amazon_sales_analysis/`
+
 ## Dataset Source
 - Kaggle dataset: `aliiihussain/amazon-sales-dataset`
 - Link: https://www.kaggle.com/datasets/aliiihussain/amazon-sales-dataset
@@ -71,7 +76,7 @@ See root `README.md` for complete project tree and runbook.
 ## How to Run
 ```bash
 pip install -r requirements.txt
-python main.py
+python scripts/run_pipeline.py
 streamlit run app/streamlit_app.py
 ```
 
@@ -105,6 +110,8 @@ pytest
 - Exported CI artifacts:
   - `reports/metrics/coverage.xml`
   - `reports/metrics/pytest-results.xml`
+
+Coverage is enforced on `src/churn_prediction`, which is the canonical package for this module.
 
 ## Release Process
 1. Add release entry in `CHANGELOG.md`.

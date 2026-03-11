@@ -8,9 +8,9 @@ import streamlit as st
 ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT_DIR / "src"))
 
-from amazon_sales_analysis.analytics import add_derived_metrics, summarize_kpis
-from amazon_sales_analysis.decision_engine import build_actionable_recommendations
-from amazon_sales_analysis.table_organization import build_executive_tables
+from churn_prediction.analytics import add_derived_metrics, summarize_kpis
+from churn_prediction.decision_engine import build_actionable_recommendations
+from churn_prediction.table_organization import build_executive_tables
 
 ASSETS_CSS = ROOT_DIR / "assets" / "custom.css"
 DATASET_PATH = ROOT_DIR / "data" / "processed" / "amazon_sales_clean.csv"
@@ -52,7 +52,7 @@ I18N = {
         "monthly_trend": "Tendência Mensal de Receita",
         "recruiter_signals": "Sinais de Senioridade Técnica",
         "recruiter_md": """
-- Arquitetura orientada a domínio (`src/amazon_sales_analysis`) com separação clara de responsabilidades.
+- Arquitetura orientada a domínio (`src/churn_prediction`) com separação clara de responsabilidades.
 - Pipeline executável por script, com fallback para ambiente sem `kagglehub`.
 - Padrão de qualidade com testes automatizados para regras de limpeza e domínio.
 - Dashboard orientado a decisão: KPI, segmentação, tendência e leitura executiva.
@@ -102,7 +102,7 @@ I18N = {
         "monthly_trend": "Monthly Revenue Trend",
         "recruiter_signals": "Technical Seniority Signals",
         "recruiter_md": """
-- Domain-oriented architecture (`src/amazon_sales_analysis`) with clear separation of responsibilities.
+- Domain-oriented architecture (`src/churn_prediction`) with clear separation of responsibilities.
 - Script-driven pipeline with fallback for environments without `kagglehub`.
 - Quality standards with automated tests for cleaning and domain rules.
 - Decision-oriented dashboard: KPIs, segmentation, trend and executive view.

@@ -1,7 +1,7 @@
 ﻿import pandas as pd
 import pytest
 
-from amazon_sales_analysis.data_preprocessing import clean_sales_data
+from churn_prediction.data_preprocessing import clean_sales_data
 
 
 def _base_df() -> pd.DataFrame:

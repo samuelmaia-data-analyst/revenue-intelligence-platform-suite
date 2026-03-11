@@ -83,7 +83,7 @@ def calcular_crescimento(dados, coluna_data=None, coluna_valor=None, periodo='M'
                 raise ValueError("Não foi possível identificar uma coluna de valor")
 
     # Converter data - para seu caso específico, DATE_ID parece ser numérico
-    print(f"\n🔄 Processando dados...")
+    print("\n🔄 Processando dados...")
 
     # Verificar o tipo da coluna de data
     if dados[coluna_data].dtype in ['int64', 'float64']:

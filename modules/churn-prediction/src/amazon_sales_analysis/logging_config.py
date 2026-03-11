@@ -1,7 +1,4 @@
-﻿import logging
+import sys
+from importlib import import_module
 
-LOG_FORMAT = "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
-
-
-def configure_logging(level: int = logging.INFO) -> None:
-    logging.basicConfig(level=level, format=LOG_FORMAT)
+sys.modules[__name__] = import_module("churn_prediction.logging_config")

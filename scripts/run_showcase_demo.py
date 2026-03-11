@@ -8,17 +8,29 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
-sys.path.insert(0, str(ROOT / "packages"))
 
-from common.contracts import validate_contract  # noqa: E402
-from platform_connectors import (  # noqa: E402
-    DuckDBTelemetryConnector,
-    SQLiteTelemetryConnector,
-    seed_demo_telemetry,
-    seed_demo_telemetry_duckdb,
-)
-from platform_observability import write_monitoring_outputs  # noqa: E402
+try:
+    from common.contracts import validate_contract
+    from platform_connectors import (
+        DuckDBTelemetryConnector,
+        SQLiteTelemetryConnector,
+        seed_demo_telemetry,
+        seed_demo_telemetry_duckdb,
+    )
+    from platform_observability import write_monitoring_outputs
+except ModuleNotFoundError:
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    if str(ROOT / "packages") not in sys.path:
+        sys.path.insert(0, str(ROOT / "packages"))
+    from common.contracts import validate_contract
+    from platform_connectors import (
+        DuckDBTelemetryConnector,
+        SQLiteTelemetryConnector,
+        seed_demo_telemetry,
+        seed_demo_telemetry_duckdb,
+    )
+    from platform_observability import write_monitoring_outputs
 
 SALES_PATH = ROOT / "modules" / "analise-vendas-python" / "dados_processados" / "vendas_simples.csv"
 CUSTOMER_PATH = (

@@ -1,13 +1,13 @@
 [project]
-name = "amazon-sales-analysis"
+name = "churn-prediction"
 version = "0.1.0"
-description = "Business-focused sales analytics pipeline with quality gates and executive metrics."
+description = "Business-focused churn prediction pipeline with quality gates and executive metrics."
 requires-python = ">=3.12"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
-addopts = "-q --cov=src/amazon_sales_analysis --cov-report=term-missing --cov-fail-under=70"
+addopts = "-q --cov=src/churn_prediction --cov-report=term-missing --cov-fail-under=70"
 
 [tool.black]
 line-length = 100

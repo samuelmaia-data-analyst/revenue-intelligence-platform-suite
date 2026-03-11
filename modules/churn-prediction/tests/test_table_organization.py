@@ -1,7 +1,7 @@
 import pandas as pd
 
-from amazon_sales_analysis.feature_engineering import build_features
-from amazon_sales_analysis.table_organization import build_executive_tables
+from churn_prediction.feature_engineering import build_features
+from churn_prediction.table_organization import build_executive_tables
 
 
 def _fixture_df() -> pd.DataFrame:

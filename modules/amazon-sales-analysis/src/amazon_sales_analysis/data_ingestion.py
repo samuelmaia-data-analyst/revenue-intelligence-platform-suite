@@ -1,5 +1,8 @@
-﻿import shutil
 from pathlib import Path
+
+from portfolio_analytics_shared.data_ingestion import (
+    download_amazon_sales_dataset as _download_amazon_sales_dataset,
+)
 
 from .config import KAGGLE_DATASET, RAW_DATA_DIR
 
@@ -8,33 +11,9 @@ RAW_FILENAME = "amazon_sales_dataset.csv"
 
 
 def download_amazon_sales_dataset() -> Path:
-    """Download dataset from Kaggle Hub and copy it to data/raw/amazon_sales."""
-    target_dir = RAW_DATA_DIR / RAW_SUBDIR
-    target_dir.mkdir(parents=True, exist_ok=True)
-    existing_dataset = target_dir / RAW_FILENAME
-
-    try:
-        import kagglehub
-    except ImportError as exc:
-        if existing_dataset.exists():
-            print(f"kagglehub não instalado. Usando dataset local existente em: {existing_dataset}")
-            return target_dir
-        raise ImportError(
-            "kagglehub não instalado e não existe dataset local em data/raw. "
-            "Execute: pip install kagglehub"
-        ) from exc
-
-    print(f"Baixando dataset '{KAGGLE_DATASET}' via kagglehub...")
-    source_path = Path(kagglehub.dataset_download(KAGGLE_DATASET))
-
-    for item in source_path.iterdir():
-        destination = target_dir / item.name
-        if item.is_dir():
-            if destination.exists():
-                shutil.rmtree(destination)
-            shutil.copytree(item, destination)
-        else:
-            shutil.copy2(item, destination)
-
-    print(f"Download concluido. Arquivos em: {target_dir}")
-    return target_dir
+    return _download_amazon_sales_dataset(
+        raw_data_dir=RAW_DATA_DIR,
+        kaggle_dataset=KAGGLE_DATASET,
+        raw_subdir=RAW_SUBDIR,
+        raw_filename=RAW_FILENAME,
+    )

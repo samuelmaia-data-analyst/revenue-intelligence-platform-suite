@@ -19,7 +19,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
       - name: Lint (root)
-        run: ruff check apps platform packages scripts tests main.py
+        run: ruff check apps platform platform_connectors platform_observability packages scripts tests main.py
       - name: Tests (root + contracts)
         run: pytest
 
@@ -54,6 +54,23 @@ jobs:
       - name: Test module
         working-directory: ${{ matrix.module_path }}
         run: pytest -q tests
+
+  sales-analytics-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install module deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff
+          pip install -r modules/analise-vendas-python/requirements.txt
+      - name: Lint sales analytics module
+        run: ruff check modules/analise-vendas-python/app.py modules/analise-vendas-python/scripts
+      - name: Compile sales analytics app
+        run: python -m py_compile modules/analise-vendas-python/app.py modules/analise-vendas-python/scripts/analise_crescimento.py modules/analise-vendas-python/scripts/processador_powerbi.py
 
   executive-smoke:
     runs-on: ubuntu-latest

@@ -3,6 +3,7 @@ from pathlib import Path
 
 import streamlit as st
 
+
 def _find_repo_root(start: Path) -> Path:
     for candidate in (start, *start.parents):
         if (candidate / "pyproject.toml").exists() and (candidate / "platform_connectors").exists():
@@ -11,10 +12,14 @@ def _find_repo_root(start: Path) -> Path:
 
 
 ROOT = _find_repo_root(Path(__file__).resolve())
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
-if str(ROOT / "packages") not in sys.path:
-    sys.path.insert(0, str(ROOT / "packages"))
+try:
+    import common  # noqa: F401
+    import platform_connectors  # noqa: F401
+except ModuleNotFoundError:
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    if str(ROOT / "packages") not in sys.path:
+        sys.path.insert(0, str(ROOT / "packages"))
 
 st.set_page_config(
     page_title="Revenue-Intelligence-Platform-Suite",

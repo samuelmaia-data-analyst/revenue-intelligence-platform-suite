@@ -3,10 +3,10 @@
 🎯 PROCESSADOR PERFEITO PARA POWER BI
 Gera dados 100% compatíveis e testados
 """
-import pandas as pd
-import numpy as np
 import os
 from datetime import datetime
+
+import pandas as pd
 
 
 def verificar_ambiente():
@@ -43,7 +43,7 @@ def carregar_dados_seguro(caminho):
             try:
                 df = pd.read_csv(caminho, encoding='utf-8')
                 print("✅ Encoding: utf-8")
-            except:
+            except UnicodeDecodeError:
                 df = pd.read_csv(caminho, encoding='ISO-8859-1')
                 print("✅ Encoding: ISO-8859-1")
 
@@ -67,7 +67,7 @@ def corrigir_tipos_dados(df):
         if col in df_corrigido.columns:
             # Remover símbolos e converter
             if df_corrigido[col].dtype == 'object':
-                df_corrigido[col] = df_corrigido[col].replace('[\$,]', '', regex=True)
+                df_corrigido[col] = df_corrigido[col].replace(r"[\$,]", "", regex=True)
                 df_corrigido[col] = pd.to_numeric(df_corrigido[col], errors='coerce')
             print(f"  ✅ {col}: {df_corrigido[col].dtype}")
 
@@ -321,7 +321,7 @@ def main():
     if df is None:
         return
 
-    print(f"\n💰 DADOS ORIGINAIS:")
+    print("\n💰 DADOS ORIGINAIS:")
     print(f"   Total SALES: ${df['SALES'].sum():,.2f}")
     print(f"   Média SALES: ${df['SALES'].mean():,.2f}")
 
@@ -332,7 +332,7 @@ def main():
     fato, produtos, clientes, tempo = criar_modelo_estrela(df_corrigido)
 
     # 5. Validar dados
-    print(f"\n✅ DADOS PROCESSADOS:")
+    print("\n✅ DADOS PROCESSADOS:")
     print(f"   Total vendas: ${fato['SALES'].sum():,.2f}")
     print(f"   Ticket médio: ${fato['SALES'].mean():,.2f}")
     print(f"   Transações: {len(fato):,}")
@@ -345,9 +345,9 @@ def main():
     total_atual = fato['SALES'].sum()
 
     if total_esperado_min <= total_atual <= total_esperado_max:
-        print(f"\n🎯 VALIDAÇÃO: DADOS CORRETOS!")
+        print("\n🎯 VALIDAÇÃO: DADOS CORRETOS!")
     else:
-        print(f"\n⚠️ ALERTA: Total fora do esperado!")
+        print("\n⚠️ ALERTA: Total fora do esperado!")
         print(f"   Esperado: ${total_esperado_min:,.2f} - ${total_esperado_max:,.2f}")
         print(f"   Obtido: ${total_atual:,.2f}")
 
@@ -362,17 +362,17 @@ def main():
     print("✅ PROCESSAMENTO CONCLUÍDO COM SUCESSO!")
     print("=" * 70)
 
-    print(f"\n📁 ARQUIVOS SALVOS EM:")
+    print("\n📁 ARQUIVOS SALVOS EM:")
     print(f"   {caminho_saida}")
 
-    print(f"\n🎯 RECOMENDAÇÃO:")
-    print(f"   1. Use 'vendas_simples.csv' para começar (mais fácil)")
-    print(f"   2. Siga as instruções em 'LEIAME_POWERBI.txt'")
+    print("\n🎯 RECOMENDAÇÃO:")
+    print("   1. Use 'vendas_simples.csv' para começar (mais fácil)")
+    print("   2. Siga as instruções em 'LEIAME_POWERBI.txt'")
 
-    print(f"\n🚀 PRÓXIMOS PASSOS:")
-    print(f"   1. Abra Power BI Desktop")
-    print(f"   2. Importe 'vendas_simples.csv'")
-    print(f"   3. Crie um gráfico somando SALES")
+    print("\n🚀 PRÓXIMOS PASSOS:")
+    print("   1. Abra Power BI Desktop")
+    print("   2. Importe 'vendas_simples.csv'")
+    print("   3. Crie um gráfico somando SALES")
     print(f"   4. Deve mostrar: ${fato['SALES'].sum():,.2f}")
     print("=" * 70)
 

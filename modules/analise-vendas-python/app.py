@@ -606,7 +606,7 @@ try:
         st.markdown("### Sobre este Dashboard")
 
         st.markdown(
-            f"""
+            """
 **Funcionalidades principais:**
 - 📤 Upload de CSV com seleção dinâmica de colunas
 - 📈 Crescimento periódico (mensal/trimestral/anual)

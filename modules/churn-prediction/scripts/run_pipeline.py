@@ -5,24 +5,24 @@ from pathlib import Path
 ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT_DIR / "src"))
 
-from amazon_sales_analysis.config import TABLES_DIR
-from amazon_sales_analysis.contracts import enforce_raw_contract, export_contract_snapshot
-from amazon_sales_analysis.data_ingestion import download_amazon_sales_dataset
-from amazon_sales_analysis.data_preprocessing import (
+from churn_prediction.config import TABLES_DIR
+from churn_prediction.contracts import enforce_raw_contract, export_contract_snapshot
+from churn_prediction.data_ingestion import download_amazon_sales_dataset
+from churn_prediction.data_preprocessing import (
     clean_sales_data,
     load_raw_sales_data,
     save_processed_data,
 )
-from amazon_sales_analysis.decision_engine import build_actionable_recommendations
-from amazon_sales_analysis.eda import basic_eda
-from amazon_sales_analysis.evaluation import build_executive_summary
-from amazon_sales_analysis.feature_engineering import build_features
-from amazon_sales_analysis.logging_config import configure_logging
-from amazon_sales_analysis.metrics import collect_product_metrics, save_product_metrics
-from amazon_sales_analysis.modeling import rank_discount_opportunities
-from amazon_sales_analysis.quality import enforce_clean_quality_gates
-from amazon_sales_analysis.table_organization import build_executive_tables
-from amazon_sales_analysis.visualization import sales_trend_over_time, top_categories_by_sales
+from churn_prediction.decision_engine import build_actionable_recommendations
+from churn_prediction.eda import basic_eda
+from churn_prediction.evaluation import build_executive_summary
+from churn_prediction.feature_engineering import build_features
+from churn_prediction.logging_config import configure_logging
+from churn_prediction.metrics import collect_product_metrics, save_product_metrics
+from churn_prediction.modeling import rank_discount_opportunities
+from churn_prediction.quality import enforce_clean_quality_gates
+from churn_prediction.table_organization import build_executive_tables
+from churn_prediction.visualization import sales_trend_over_time, top_categories_by_sales
 
 CONTRACT_VERSION = "1.0.0"
 

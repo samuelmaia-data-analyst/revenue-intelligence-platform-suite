@@ -1,6 +1,6 @@
 ﻿import pandas as pd
 
-from amazon_sales_analysis.data_preprocessing import clean_sales_data
+from churn_prediction.data_preprocessing import clean_sales_data
 
 
 def _base_fixture() -> pd.DataFrame:

@@ -7,6 +7,7 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
+
 def _find_repo_root(start: Path) -> Path:
     for candidate in (start, *start.parents):
         if (candidate / "pyproject.toml").exists() and (candidate / "platform_connectors").exists():
@@ -15,18 +16,26 @@ def _find_repo_root(start: Path) -> Path:
 
 
 ROOT = _find_repo_root(Path(__file__).resolve())
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
-if str(ROOT / "packages") not in sys.path:
-    sys.path.insert(0, str(ROOT / "packages"))
-
-from platform_connectors import (  # noqa: E402
-    DuckDBTelemetryConnector,
-    SQLiteTelemetryConnector,
-    seed_demo_telemetry,
-    seed_demo_telemetry_duckdb,
-)
-from platform_observability import ActionAdoptionLogger  # noqa: E402
+try:
+    from platform_connectors import (
+        DuckDBTelemetryConnector,
+        SQLiteTelemetryConnector,
+        seed_demo_telemetry,
+        seed_demo_telemetry_duckdb,
+    )
+    from platform_observability import ActionAdoptionLogger
+except ModuleNotFoundError:
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    if str(ROOT / "packages") not in sys.path:
+        sys.path.insert(0, str(ROOT / "packages"))
+    from platform_connectors import (
+        DuckDBTelemetryConnector,
+        SQLiteTelemetryConnector,
+        seed_demo_telemetry,
+        seed_demo_telemetry_duckdb,
+    )
+    from platform_observability import ActionAdoptionLogger
 
 st.set_page_config(page_title="Executive KPI Board", layout="wide")
 

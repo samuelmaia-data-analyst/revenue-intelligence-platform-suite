@@ -2,8 +2,8 @@ import json
 
 import pandas as pd
 
-from amazon_sales_analysis.feature_engineering import build_features
-from amazon_sales_analysis.metrics import collect_product_metrics, save_product_metrics
+from churn_prediction.feature_engineering import build_features
+from churn_prediction.metrics import collect_product_metrics, save_product_metrics
 
 
 def _base_df() -> pd.DataFrame:
